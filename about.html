@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Fraud Prediction Analyzer</title>
+    <link rel="icon" type="image/png" href="icon.png">
+    <!-- Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* ==================== 
+           1. Classic Theme & Base Layout
+           ==================== */
+        body {
+            /* Classic serif font for a traditional look */
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            background-color: #f5f5f4; /* A neutral stone background */
+            color: #1f2937; /* Dark gray for primary text */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        /* Header and Footer */
+        .classic-header {
+            background-color: #ffffff;
+            border-bottom: 1px solid #d1d5db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .classic-footer {
+            background-color: #e5e7eb;
+            border-top: 1px solid #d1d5db;
+            color: #4b5563;
+        }
+
+        /* Main content container */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to top */
+            padding: 2.5rem 1rem;
+        }
+
+        .about-container {
+            width: 100%;
+            max-width: 700px;
+            background-color: #ffffff;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 3rem;
+            box-sizing: border-box;
+            border: 1px solid #d1d5db; /* Light gray border */
+            line-height: 1.7;
+        }
+
+        /* ==================== 
+           2. Typography & Content Styling
+           ==================== */
+        /* Headings */
+        .about-title {
+            font-size: 2.25rem; 
+            font-weight: 700;
+            color: #1d4ed8; /* Classic Blue */
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #1d4ed8;
+        }
+
+        .about-subtitle {
+            font-size: 1.5rem; 
+            font-weight: 600;
+            color: #374151; /* Darker gray for subtitles */
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .about-description {
+            font-size: 1rem;
+            color: #4b5563; /* Medium gray for descriptions */
+            margin-bottom: 1.5rem;
+        }
+
+        /* List Styling */
+        .content-list {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            color: #4b5563;
+            font-size: 1rem;
+        }
+
+        .content-list li {
+            margin-bottom: 0.5rem;
+        }
+        
+        /* ==================== 
+           3. Interactive Elements & Links
+           ==================== */
+        .home-link {
+            color: #1d4ed8;
+            text-decoration: none;
+            font-weight: 600;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            padding: 0.5rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+        }
+
+        .home-link:hover {
+            background-color: #1d4ed8;
+            border-color: #1d4ed8;
+            color: #ffffff;
+        }
+        
+        /* ==================== 
+           4. Responsive Design
+           ==================== */
+        @media (max-width: 600px) {
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+            .about-container {
+                padding: 1.5rem;
+            }
+            .about-title {
+                font-size: 1.75rem;
+            }
+            .about-subtitle {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="classic-header w-full">
+        <nav class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Fraud Prediction Analyzer</h1>
+            <a href="index.html" class="home-link">Home</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="about-container">
+            <h2 class="about-title">About Fraud prediction analyzer</h2>
+            
+            <section>
+                <h3 class="about-subtitle">What is Fraud Prediction Analyzer?</h3>
+                <p class="about-description">
+                    Fraud Prediction Analyzer is an interactive web application that allows users to input transaction details and instantly check 
+                    whether a transaction is likely to be fraudulent or not. It also provides a probability score indicating the likelihood of fraud.
+                </p>
+            </section>
+    
+            <section>
+                <h3 class="about-subtitle">How It Works</h3>
+                <p class="about-description">
+                    Users enter key transaction information such as amount, originator balance ratio, transaction type, time of day, and certain binary flags.
+                    The application sends this data to a backend model, which evaluates the inputs and returns a prediction and probability score in real time.
+                </p>
+            </section>
+    
+            <section>
+                <h3 class="about-subtitle">Features</h3>
+                <ul class="content-list">
+                    <li>Interactive form for simplified transaction input.</li>
+                    <li>Real-time prediction: Fraud or Not Fraud.</li>
+                    <li>Probability score for risk assessment.</li>
+                    <li>Clear, color-coded results for high/low risk transactions.</li>
+                    <li>Mobile-friendly, responsive design.</li>
+                </ul>
+            </section>
+    
+            <section>
+                <h3 class="about-subtitle">Purpose</h3>
+                <p class="about-description">
+                    This app helps financial institutions or users quickly identify suspicious transactions, enabling proactive fraud detection and decision-making.
+                </p>
+            </section>
+    
+            <section>
+                <h3 class="about-subtitle">Technology Stack</h3>
+                <p class="about-description">
+                    <strong>Frontend:</strong> HTML, Tailwind CSS, JavaScript <br>
+                    <strong>Backend:</strong> Python (Flask) <br>
+                    <strong>Model:</strong> Pre-trained machine learning model for fraud prediction
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="classic-footer w-full py-4 mt-auto">
+        <div class="text-center text-sm">© 2025 Fraud Prediction Analyzer • All Rights Reserved</div>
+    </footer>
+
+</body>
+</html>
+

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="icon.png">
+    <title>Fraud Prediction Analyzer</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        body {
+            /* Classic serif font for a traditional look */
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col bg-stone-100 text-gray-900">
+
+    <header class="w-full shadow-sm bg-white border-b border-gray-200">
+        <nav class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Fraud Prediction Analyzer</h1>
+            <div class="flex items-center space-x-4">
+                <a href="about.html" class="text-blue-700 hover:text-blue-900 font-medium">
+                    About Analyzer
+                </a>
+
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-6">
+        <div id="app" class="w-full max-w-xl bg-white shadow-lg rounded-lg p-8 space-y-6 border border-gray-300">
+            <header class="text-center">
+                <h1 class="text-3xl font-bold text-gray-800">Simplified Transaction Input</h1>
+                <p class="text-gray-600 mt-1">Provide details to predict Fraud or Not </p>
+            </header>
+
+            <form id="predictionForm" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="amount" class="block text-sm font-medium text-gray-700">Transaction Amount</label>
+                        <input type="number" id="amount" name="amount" value="2500000" step="0.01" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="orig_balance_ratio" class="block text-sm font-medium text-gray-700">Originator
+                            Balance Ratio
+                            (0-1)</label>
+                        <input type="number" id="orig_balance_ratio" name="orig_balance_ratio" value="0.98" step="0.01"
+                            min="0" max="1" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="hour" class="block text-sm font-medium text-gray-700">Time of Day (0-23)</label>
+                        <input type="number" id="hour" name="hour" value="14" min="0" max="23" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="transaction_type" class="block text-sm font-medium text-gray-700">Transaction
+                            Type</label>
+                        <select id="transaction_type" name="transaction_type" required
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                            <option value="TRANSFER">TRANSFER</option>
+                            <option value="CASH_IN">CASH_IN</option>
+                            <option value="CASH_OUT">CASH_OUT</option>
+                            <option value="DEBIT">DEBIT</option>
+                            <option value="PAYMENT">PAYMENT</option>
+                        </select>
+                    </div>
+                </div>
+
+                <h3 class="text-lg font-semibold border-t pt-4 mt-4 text-gray-800">Binary Flags</h3>
+                <div class="grid grid-cols-3 gap-4 pt-2">
+                    <div class="flex items-center">
+                        <input id="exact_drain_flag" name="exact_drain_flag" type="checkbox" checked
+                            class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="exact_drain_flag" class="ml-2 block text-sm text-gray-700">Exact Drain</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="large_transfer_flag" name="large_transfer_flag" type="checkbox" checked
+                            class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="large_transfer_flag" class="ml-2 block text-sm text-gray-700">Large Transfer</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input id="is_flagged" name="is_flagged" type="checkbox"
+                            class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                        <label for="is_flagged" class="ml-2 block text-sm text-gray-700">Is Flagged</label>
+                    </div>
+                </div>
+
+                <button type="submit" id="submitButton"
+                    class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
+                    Send Prediction Request
+                </button>
+            </form>
+
+            <div id="resultCard" class="hidden mt-6 p-4 border-l-4 rounded-md" role="alert">
+                <div class="flex items-center justify-between">
+                    <p id="predictionText" class="text-lg font-semibold"></p>
+                    <p id="probabilityText" class="text-xl font-bold"></p>
+                </div>
+                <p id="messageText" class="mt-1 text-sm"></p>
+            </div>
+
+            <div id="loadingIndicator" class="hidden flex items-center justify-center space-x-2 text-blue-700">
+                <svg class="animate-spin h-5 w-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                    </path>
+                </svg>
+                <span>Sending request to the Model</span>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full bg-gray-200 text-gray-700 py-4 mt-auto border-t border-gray-300">
+        <div class="text-center text-sm">© 2025 Fraud Analyzer • All Rights Reserved</div>
+    </footer>
+
+    <script>
+        // Form Handling
+        const form = document.getElementById('predictionForm');
+        const resultCard = document.getElementById('resultCard');
+        const predictionText = document.getElementById('predictionText');
+        const probabilityText = document.getElementById('probabilityText');
+        const messageText = document.getElementById('messageText');
+        const submitButton = document.getElementById('submitButton');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const apiUrl = 'http://localhost:5000/predict';
+
+        function createApiPayload(data) {
+            return {
+                amount: parseFloat(data.get('amount')),
+                orig_balance_ratio: parseFloat(data.get('orig_balance_ratio')),
+                hour: parseInt(data.get('hour')),
+                transaction_type: data.get('transaction_type'),
+                exact_drain_flag: data.get('exact_drain_flag') ? 1 : 0,
+                large_transfer_flag: data.get('large_transfer_flag') ? 1 : 0,
+                is_flagged: data.get('is_flagged') ? 1 : 0,
+            };
+        }
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const apiPayload = createApiPayload(formData);
+            console.log("Simplified JSON Payload sent to API:", apiPayload);
+
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            loadingIndicator.classList.remove('hidden');
+            resultCard.classList.add('hidden');
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(apiPayload)
+                });
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const result = await response.json();
+
+                const probability = (result.probability * 100).toFixed(1);
+                const isFraud = result.prediction === "Fraud";
+
+                let bgColor, borderColor, textColor, message;
+                if (isFraud) {
+                    bgColor = 'bg-red-50';
+                    borderColor = 'border-red-500';
+                    textColor = 'text-red-800';
+                    message = `HIGH RISK detected. The model predicts: ${result.prediction}.`;
+                } else {
+                    bgColor = 'bg-green-50';
+                    borderColor = 'border-green-500';
+                    textColor = 'text-green-800';
+                    message = `LOW RISK. The model predicts: ${result.prediction}.`;
+                }
+
+                resultCard.className = `mt-6 p-4 border-l-4 rounded-md ${bgColor} ${borderColor}`;
+                predictionText.textContent = `Prediction: ${result.prediction}`;
+                predictionText.className = `text-lg font-semibold ${textColor}`;
+                probabilityText.textContent = `${probability}%`;
+                probabilityText.className = `text-xl font-bold ${textColor}`;
+                messageText.textContent = message;
+                resultCard.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Error during prediction:', error);
+                resultCard.className = 'mt-6 p-4 border-l-4 rounded-md bg-yellow-50 border-yellow-500';
+                predictionText.textContent = 'Connection Error';
+                predictionText.className = 'text-lg font-semibold text-yellow-800';
+                probabilityText.textContent = '';
+                messageText.textContent = `Could not connect to ${apiUrl}. Ensure your backend server is running and handles the simplified payload.`;
+                resultCard.classList.remove('hidden');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Prediction Request';
+                loadingIndicator.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
