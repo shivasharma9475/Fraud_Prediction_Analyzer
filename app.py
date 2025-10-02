@@ -16,11 +16,6 @@ except FileNotFoundError:
     print("❌ ERROR: Model file 'xgb_fraud_model.joblib' not found.")
     xgb_clf = None
 
-# --- Routes ---
-@app.route("/", methods=["GET"])
-def home():
-    return "Welcome to Fraud Detection API! Use POST /predict to submit data."
-
 @app.route("/form")
 def serve_frontend():
     return send_from_directory('.', 'index.html')  # Serve your HTML page
